@@ -1,4 +1,24 @@
-# QuoteEngine/models.py
+"""
+QuoteModel Module.
+
+This module defines the QuoteModel class, which represents a quote along 
+with its associated author. The QuoteModel encapsulates the quote text and 
+author information, providing functionality to clean and format the quote 
+for easy display.
+
+Classes:
+- QuoteModel: A class for creating and managing quotes, including methods 
+  for cleaning text and generating a string representation of the quote.
+
+Usage:
+To create a quote, instantiate the QuoteModel class with the quote text and 
+author. Use the `__str__()` method to obtain a formatted representation of 
+the quote.
+
+Example:
+    quote = QuoteModel("To be, or not to be.", "William Shakespeare")
+    print(quote)  # Output: "To be, or not to be." - William Shakespeare
+"""
 
 class QuoteModel:
     """
@@ -20,10 +40,10 @@ class QuoteModel:
             Cleans the provided text by replacing specific unicode characters 
             with their ASCII equivalents.
     """
-
+    
     def __init__(self, body: str, author: str):
         """
-        Initializes a QuoteModel instance with the provided quote body and author.
+        Initialize a QuoteModel instance with the provided quote body and author.
 
         Args:
             body (str): The text of the quote.
@@ -34,8 +54,7 @@ class QuoteModel:
 
     def __str__(self):
         """
-        Returns a string representation of the quote in the format:
-        "quote" - author.
+        Return a string representation of the quote in the format: "quote" - author.
 
         Returns:
             str: A formatted string representing the quote and its author.
@@ -44,8 +63,7 @@ class QuoteModel:
     
     def clean_text(self, text):
         """
-        Cleans the given text by replacing specific unicode characters with ASCII 
-        equivalents.
+        Clean the given text by replacing specific unicode characters with ASCII equivalents.
 
         Args:
             text (str): The text to be cleaned.

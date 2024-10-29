@@ -1,12 +1,22 @@
+"""
+This module provides functionality to generate memes from quotes and images.
+
+It allows users to create memes by either using a specified image path or 
+selecting a random image from a predefined directory. Users can provide 
+a quote body and author, or random quotes will be selected from specified 
+files. The generated meme is saved to a temporary directory.
+
+Functions:
+- generate_meme: Generates a meme given an image path, quote body, and author.
+"""
+
 import os
 import random
+import argparse
 from QuoteEngine.ingestor import Ingestor  # Ensure you import your Ingestor
 from MemeEngine import MemeEngine  # Correct import
 from QuoteEngine import QuoteModel  # Ensure you import QuoteModel
 
-# @TODO Import your Ingestor and MemeEngine classes
-
-error_file = './_data/errorFile.txt'
 
 def generate_meme(path=None, body=None, author=None):
     """
@@ -71,11 +81,17 @@ def generate_meme(path=None, body=None, author=None):
 
 if __name__ == "__main__":
     
-    # @TODO Use ArgumentParser to parse the following CLI arguments
-    # path - path to an image file
-    # body - quote body to add to the image
-    # author - quote author to add to the image
-    # add docstring
+    parser = argparse.ArgumentParser(description="Generate a meme from a quote.")
+    parser.add_argument('--path', type=str, help='Path to an image file')
+    parser.add_argument('--body', type=str, help='Quote body to add to the image')
+    parser.add_argument('--author', type=str, help='Quote author to add to the image')
+
+    args = parser.parse_args()
     
-    args = None
-    print(generate_meme(args.path, args.body, args.author))
+    # Generate and print the meme path
+    try:
+        meme_path = generate_meme(args.path, args.body, args.author)
+        print(f"Meme generated at: {meme_path}")
+    except Exception as e:
+        print(f"Error: {e}")
+

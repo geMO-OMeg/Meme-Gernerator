@@ -1,9 +1,26 @@
-# MemeEngine/meme_engine.py
+"""
+Meme Engine Module.
+
+This module provides the MemeEngine class, which is responsible for 
+generating memes from images. The class allows users to create memes 
+by adding quotes and authors to specified images, resizing the images 
+while maintaining aspect ratios, and saving the final memes to a 
+designated output directory.
+
+Classes:
+- MemeEngine: A class that handles meme generation by loading images, 
+  drawing text on them, and saving the results to an output directory.
+
+Usage:
+To create a meme, initialize an instance of the MemeEngine with the 
+desired output directory, then call the `make_meme` method with the 
+image path, quote text, and author. The generated meme will be saved 
+in the specified output directory.
+"""
 
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-error_file = './_data/errorFile.txt'
 
 class MemeEngine:
     """
@@ -19,7 +36,7 @@ class MemeEngine:
 
     def __init__(self, output_dir: str):
         """
-        Initializes the MemeEngine with the specified output directory.
+        Initialize the MemeEngine with the specified output directory.
 
         Args:
             output_dir (str): The directory where memes will be saved.
@@ -30,7 +47,7 @@ class MemeEngine:
 
     def make_meme(self, img_path: str, text: str, author: str, width: int = 500) -> str:
         """
-        Creates a meme from a specified image by adding a quote and author.
+        Create a meme from a specified image by adding a quote and author.
 
         This method opens the image, resizes it while maintaining the aspect
         ratio, and draws the specified quote and author onto the image. 

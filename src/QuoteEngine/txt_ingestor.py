@@ -1,10 +1,25 @@
-# QuoteEngine/ingestors/txt_ingestor.py
+"""
+TXT Ingestor Module.
+
+This module contains the TXTIngestor class, which is responsible for
+ingesting quotes from plain text (.txt) files. The class implements
+the IngestorInterface, providing methods to determine if a TXT file
+can be ingested and to parse quotes from the TXT file format.
+
+Classes:
+- TXTIngestor: A class for handling the ingestion of TXT files.
+  It provides functionality to check if a file can be ingested based
+  on its file extension and to extract quotes in the format "quote - author".
+
+Usage:
+To use the TXTIngestor, first check if the file can be ingested using
+the `can_ingest` method. If the file can be ingested, call the `parse`
+method to extract quotes.
+"""
 
 from typing import List
 from .ingestor import IngestorInterface
 from .models import QuoteModel
-
-error_file = './_data/errorFile.txt'
 
 class TXTIngestor(IngestorInterface):
     """
@@ -23,7 +38,7 @@ class TXTIngestor(IngestorInterface):
             Parses the specified TXT file and extracts quotes in the format 
             "quote - author". Returns a list of QuoteModel instances.
     """
-
+    
     @classmethod
     def can_ingest(cls, path: str) -> bool:
         """
@@ -66,6 +81,5 @@ class TXTIngestor(IngestorInterface):
                         body, author = line.split(' - ')
                         quotes.append(QuoteModel(body=body.strip(), author=author.strip()))
         except Exception as ex:
-            with open(error_file, 'a') as f:
-                f.write(f"\nerror with open error, txt_ingestor: {ex}")
+            print(f"error with open error, txt_ingestor: {ex}")
         return quotes

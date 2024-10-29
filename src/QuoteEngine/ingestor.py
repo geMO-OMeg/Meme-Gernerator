@@ -1,4 +1,28 @@
-# QuoteEngine/ingestor.py
+"""
+Ingestor Module.
+
+This module defines the IngestorInterface and Ingestor classes, which
+provide a framework for ingesting quotes from various file types. The
+IngestorInterface establishes the contract for all ingestor implementations,
+while the Ingestor class utilizes these implementations to handle file
+parsing based on the file type.
+
+Classes:
+- IngestorInterface: An abstract base class that defines the interface for
+  all ingestor classes. It requires the implementation of methods to 
+  determine if a file can be ingested and to parse the file into a list
+  of QuoteModel instances.
+
+- Ingestor: A class that manages the ingestion process by selecting the
+  appropriate ingestor implementation based on the file type and calling
+  its parsing method.
+
+Usage:
+To use the ingestion framework, create a new ingestor class that inherits
+from IngestorInterface and implements the required methods. Then, use the
+Ingestor class to parse files by providing the file path. The correct
+ingestor will be selected automatically based on the file type.
+"""
 
 from abc import ABC, abstractmethod
 from typing import List
@@ -54,8 +78,7 @@ class IngestorInterface(ABC):
 
 class Ingestor:
     """
-    Ingestor class that utilizes various ingestor implementations
-    to determine the correct one for handling a specific file type.
+    Utilize various ingestor implementations to determine the correct one for handling a specific file type.
 
     This class provides a method to parse files by delegating to the
     appropriate ingestor based on the file type.
@@ -64,11 +87,11 @@ class Ingestor:
         parse(cls, path: str) -> List:
             Parses the given file path using the appropriate ingestor.
     """
-
+    
     @classmethod
     def parse(cls, path: str) -> List:
         """
-        Parses the specified file using the appropriate ingestor.
+        Parse the specified file using the appropriate ingestor.
 
         This method checks the file path against known ingestor classes
         and uses the first one that can handle the file type.

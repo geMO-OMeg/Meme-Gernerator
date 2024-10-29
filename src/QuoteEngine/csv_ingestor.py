@@ -1,11 +1,26 @@
-# QuoteEngine/ingestors/csv_ingestor.py
+"""
+CSVIngestor Module.
+
+This module defines the CSVIngestor class, which is responsible for ingesting 
+quotes from CSV files. It inherits from the IngestorInterface and provides 
+methods for determining if a file can be ingested and for parsing the 
+file into a list of QuoteModel instances.
+
+Classes:
+- CSVIngestor: A class for reading quotes from CSV files and converting 
+  them into QuoteModel instances.
+
+Usage:
+To use the CSVIngestor, call the `can_ingest` method to check if a given 
+file is a CSV file, and then use the `parse` method to read the file 
+and extract quotes.
+"""
 
 import csv
 from typing import List
 from .ingestor import IngestorInterface
 from .models import QuoteModel
 
-error_file = './_data/errorFile.txt'
 
 class CSVIngestor(IngestorInterface):
     """
@@ -62,6 +77,5 @@ class CSVIngestor(IngestorInterface):
                     if len(row) == 2:
                         quotes.append(QuoteModel(body=row[0], author=row[1]))
         except Exception as ex:
-            with open(error_file, 'a') as f:
-                f.write(f"\nerror with open error, csv_ingestor line 19: {ex}")
+            print(f"error with open error, csv_ingestor line 19: {ex}")
         return quotes

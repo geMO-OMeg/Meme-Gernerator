@@ -1,11 +1,26 @@
-# QuoteEngine/ingestors/pdf_ingestor.py
+"""
+PDF Ingestor Module.
+
+This module contains the PDFIngestor class, which is responsible for
+ingesting quotes from PDF files. The class implements the IngestorInterface,
+providing methods to check if a PDF file can be ingested and to parse
+quotes from the PDF file format.
+
+Classes:
+- PDFIngestor: A class for handling the ingestion of PDF files.
+  It provides functionality to determine if a file can be ingested based
+  on its file extension and to extract quotes from the PDF.
+
+Usage:
+To use the PDFIngestor, first check if the file can be ingested using
+the `can_ingest` method. If the file can be ingested, call the `parse`
+method to extract quotes in the format "quote - author".
+"""
 
 from typing import List
 import PyPDF2
 from .ingestor import IngestorInterface
 from .models import QuoteModel
-
-error_file = './_data/errorFile.txt'
 
 class PDFIngestor(IngestorInterface):
     """
@@ -24,7 +39,7 @@ class PDFIngestor(IngestorInterface):
             Parses the specified PDF file and extracts quotes in the format 
             "quote - author". Returns a list of QuoteModel instances.
     """
-
+    
     @classmethod
     def can_ingest(cls, path: str) -> bool:
         """
@@ -71,6 +86,5 @@ class PDFIngestor(IngestorInterface):
                                 body, author = line.split(' - ')
                                 quotes.append(QuoteModel(body=body, author=author))
         except Exception as ex:
-            with open(error_file, 'a') as f:
-                f.write(f"\nerror with open error, pdf_ingestor line 19: {ex}")
+            print(f"error with open error, pdf_ingestor line 19: {ex}")
         return quotes

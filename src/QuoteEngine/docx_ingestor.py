@@ -1,11 +1,26 @@
-# QuoteEngine/ingestors/docx_ingestor.py
+"""
+DOCX Ingestor Module.
+
+This module contains the DOCXIngestor class, which is responsible for
+ingesting quotes from .docx files. The class implements the IngestorInterface,
+providing methods to determine if a file can be ingested and to parse
+the contents of the file into QuoteModel instances.
+
+Classes:
+- DOCXIngestor: A class for handling the ingestion of .docx files.
+  It provides functionality to check if a .docx file can be ingested
+  and to parse the file to extract quotes.
+
+Usage:
+To use the DOCXIngestor, check if a .docx file can be ingested using
+the `can_ingest` method. If the file can be ingested, call the `parse`
+method to extract quotes in the format "quote - author".
+"""
 
 from typing import List
 from docx import Document
 from .ingestor import IngestorInterface
 from .models import QuoteModel
-
-error_file = './_data/errorFile.txt'
 
 class DOCXIngestor(IngestorInterface):
     """
@@ -22,11 +37,11 @@ class DOCXIngestor(IngestorInterface):
         parse(cls, path: str) -> List[QuoteModel]:
             Parses the .docx file and returns a list of QuoteModel instances.
     """
-
+    
     @classmethod
     def can_ingest(cls, path: str) -> bool:
         """
-        Determines if the ingestor can handle the specified .docx file.
+        Determine if the ingestor can handle the specified .docx file.
 
         Args:
             cls: The class itself.
@@ -40,7 +55,7 @@ class DOCXIngestor(IngestorInterface):
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """
-        Parses the specified .docx file to extract quotes.
+        Parse the specified .docx file to extract quotes.
 
         The method reads the document, splits each paragraph by the 
         delimiter ' - ', and creates QuoteModel instances from the 
@@ -64,6 +79,5 @@ class DOCXIngestor(IngestorInterface):
                     body, author = para.text.split(' - ')  # Assuming format "quote - author"
                     quotes.append(QuoteModel(body=body, author=author))
         except Exception as ex:
-            with open(error_file, 'a') as f:
-                f.write(f"\nerror with open error, docx_ingestor line 19: {ex}")
+            print(f"error with open error, docx_ingestor line 19: {ex}")
         return quotes
