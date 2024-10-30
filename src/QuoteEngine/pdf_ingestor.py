@@ -18,9 +18,12 @@ method to extract quotes in the format "quote - author".
 """
 
 from typing import List
-import PyPDF2
+import subprocess
+import os
 from .ingestor import IngestorInterface
 from .models import QuoteModel
+
+error_file = './_data/errorFile.txt'
 
 class PDFIngestor(IngestorInterface):
     """
@@ -58,10 +61,10 @@ class PDFIngestor(IngestorInterface):
         """
         Parse quotes from a PDF file.
 
-        This method reads the specified PDF file and extracts text from each 
-        page. It looks for lines that contain a quote and an author in the 
-        format "quote - author". It creates and returns a list of 
-        QuoteModel instances representing each parsed quote.
+        This method invokes the pdftotext CLI utility to convert the PDF file to
+        text. It then processes the extracted text to find quotes and their
+        authors in the format "quote - author". A list of QuoteModel instances
+        representing each parsed quote is returned.
 
         Args:
             path (str): The path to the PDF file to be parsed.
@@ -71,20 +74,31 @@ class PDFIngestor(IngestorInterface):
                               extracted quotes.
 
         Raises:
-            Exception: If an error occurs while opening or reading the file, 
-                        the error is logged to an error file.
+            Exception: If an error occurs while invoking pdftotext or processing
+                        the extracted text.
         """
         quotes = []
+        tmp = './_data/SimpleLines/temp.txt'
+
         try:
-            with open(path, 'rb') as file:
-                reader = PyPDF2.PdfReader(file)
-                for page in reader.pages:
-                    text = page.extract_text()
-                    if text:
-                        for line in text.splitlines():
-                            if ' - ' in line:
-                                body, author = line.split(' - ')
-                                quotes.append(QuoteModel(body=body, author=author))
+            # Invoke the pdftotext CLI utility
+            subprocess.call(['pdftotext', path, tmp])
+
+            # Read the extracted text
+            with open(tmp, 'r', encoding='utf-8') as file:
+                for line in file:
+                    if ' - ' in line:
+                        body, author = line.split(' - ')
+                        quotes.append(QuoteModel(body=body.strip(), author=author.strip()))
+                        if os.path.exists(tmp):
+                            os.remove(tmp)
         except Exception as ex:
-            print(f"error with open error, pdf_ingestor line 19: {ex}")
+            print(f"Error while processing PDF: {ex}")
+            with open(error_file, 'a') as f:
+                f.write(f"\nerror with open, pdf_ingestor.py: {ex}")
+        finally:
+            # Clean up the temporary file
+            if os.path.exists(tmp):
+                os.remove(tmp)
+
         return quotes

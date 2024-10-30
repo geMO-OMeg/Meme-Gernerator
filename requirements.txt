@@ -3,3 +3,6 @@ PyPDF2==1.26.0
 python-docx==0.8.11
 Pillow==9.2.0
 requests==2.28.1
+
+# Note: Install pdftotext CLI utility separately
+# sudo apt-get install poppler-utils

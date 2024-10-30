@@ -17,12 +17,14 @@ Before running the application, ensure you have the following Python libraries i
 
     Flask
     requests
-    PyPDF2
     python-docx
     Pillow
 
 You can install the required packages using pip:
-    pip install Flask requests PyPDF2 python-docx Pillow
+    pip install Flask requests python-docx Pillow
+
+Install pdftotext CLI utility separately
+    sudo apt-get install poppler-utils
 
 Run the Application:
 
